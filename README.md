@@ -15,11 +15,10 @@ or
 
 ## Usage
 
-Just run `generate-userdata.sh` an answer the prompts
+Just run `generate-userdata.sh` and answer the prompts
 
 
 ## ToDo
-* Set a hostname (and instance id?)
 * How do we know when the final reboot has happened?
 * Setup e-mail?
 * Turn off secure boot in Ubuntu?
