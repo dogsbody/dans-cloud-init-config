@@ -1,0 +1,3 @@
+[submodule "cloud-utils"]
+	path = cloud-utils
+	url = https://github.com/canonical/cloud-utils/
