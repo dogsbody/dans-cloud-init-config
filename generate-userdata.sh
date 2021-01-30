@@ -51,7 +51,8 @@ fi
 
 # Get a password
 echo 
-echo "Please enter a password that will be used for the root password..."
+echo "Let's get some information from you regarding your new system..."
+read -p 'Hostname: ' HOSTNAME
 read -sp 'Password: ' PASSWORD
 echo -e "\n"
 
@@ -77,7 +78,6 @@ $WRITEMIME $SCRIPTDIR/src/userscript:text/x-shellscript $OURCLOUDCONFIG --output
 echo "Raw Userdata: $OURUSERDATARAW"
 
 # Create our userdata volume
-$CLDLOCALD $OURUSERDATAIMG $OURUSERDATARAW
-echo "Userdata Disk Image: $OURUSERDATAIMG"
-
+$CLDLOCALD --hostname $HOSTNAME $OURUSERDATAIMG $OURUSERDATARAW
+echo "Disk Image: $OURUSERDATAIMG"
 
