@@ -22,6 +22,7 @@ hash sed
 hash find
 hash base64
 hash dirname
+hash python3 # used by write-mime-multipart
 
 # Set some variables
 printf -v DATE '%(%Y%m%d%H%M%S)T' -1
@@ -38,6 +39,13 @@ if [[ ! -x ${WRITEMIME} || ! -x ${CLDLOCALD} ]];then
   echo "  You probably just need to initialise and update the submodule..."
   echo "    git submodule init -C ${SCRIPTDIR}"
   echo "    git submodule update -C ${SCRIPTDIR}"
+  exit
+fi
+
+if ! command -v "genisoimage" >/dev/null ;then
+  echo "Error: Can't find 'genisoimage' on the sytem"
+  echo "  This can be installed (on Ubuntu 20.04) with..."
+  echo "    sudo apt install genisoimage"
   exit
 fi
 
