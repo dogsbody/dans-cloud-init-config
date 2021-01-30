@@ -4,11 +4,11 @@ My entirely personal cloud-init config generator for test, dev and play.
 
 ## Installation
 
-    git clone --recurse-submodules https://github.com/dogsbody/MainProject
+    git clone --recurse-submodules https://github.com/dogsbody/dans-cloud-init-config.git
 
 or 
 
-    git clone https://github.com/dogsbody/MainProject
+    git clone https://github.com/dogsbody/dans-cloud-init-config.git
     git submodule init
     git submodule update
 
