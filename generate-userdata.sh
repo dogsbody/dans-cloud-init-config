@@ -20,18 +20,18 @@ set -u
 hash cp
 hash sed
 hash find
+hash mktemp
 hash base64
 hash dirname
 hash python3 # used by write-mime-multipart
 
 # Set some variables
-printf -v DATE '%(%Y%m%d%H%M%S)T' -1
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 WRITEMIME="$SCRIPTDIR/cloud-utils/bin/write-mime-multipart"
 CLDLOCALD="$SCRIPTDIR/cloud-utils/bin/cloud-localds"
-OURCLOUDCONFIG="$SCRIPTDIR/$DATE-cloudconfig"
-OURUSERDATARAW="$SCRIPTDIR/$DATE-userdata.raw"
-OURUSERDATAIMG="$SCRIPTDIR/$DATE-userdata.img"
+OURCLOUDCONFIG=$(mktemp)
+OURUSERDATARAW=$(mktemp)
+OURUSERDATAIMG=""  # Set later in the script
 
 # Check we have our submodule installed
 if [[ ! -x ${WRITEMIME} || ! -x ${CLDLOCALD} ]];then
@@ -55,6 +55,7 @@ echo "Let's get some information from you regarding your new system..."
 read -p 'Hostname: ' HOSTNAME
 read -sp 'Password: ' PASSWORD
 echo -e "\n"
+OURUSERDATAIMG=$(mktemp -p "$SCRIPTDIR" "userdata-$HOSTNAME-XXXXX.img")
 
 # Create our cloudconfig from the template and set the password
 cp $SCRIPTDIR/src/cloudconfig $OURCLOUDCONFIG
@@ -71,13 +72,13 @@ for FILE in $(find "$SCRIPTDIR/src/root" -type f -print); do
   echo "  permissions: 0644"  >> $OURCLOUDCONFIG
   echo "  append: false"      >> $OURCLOUDCONFIG
 done
-echo "Cloudconfig: $OURCLOUDCONFIG"
 
 # Create our multipart file
 $WRITEMIME $SCRIPTDIR/src/userscript:text/x-shellscript $OURCLOUDCONFIG --output=$OURUSERDATARAW
-echo "Raw Userdata: $OURUSERDATARAW"
 
 # Create our userdata volume
 $CLDLOCALD --hostname $HOSTNAME $OURUSERDATAIMG $OURUSERDATARAW
 echo "Disk Image: $OURUSERDATAIMG"
+
+rm "$OURCLOUDCONFIG" "$OURUSERDATARAW"
 
