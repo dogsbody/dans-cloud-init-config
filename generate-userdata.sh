@@ -58,7 +58,7 @@ echo -e "\n"
 
 # Create our cloudconfig from the template and set the password
 cp $SCRIPTDIR/src/cloudconfig $OURCLOUDCONFIG
-sed -i -r "s/^password: trustno1$/password: $PASSWORD/" $OURCLOUDCONFIG
+sed -i -r "s/^password: hunter2$/password: $PASSWORD/" $OURCLOUDCONFIG
 
 # Encode and add the files into the cloudconfig
 echo "write_files:" >> $OURCLOUDCONFIG

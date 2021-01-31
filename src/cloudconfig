@@ -1,6 +1,6 @@
 #cloud-config
 # vim: syntax=yaml
-password: trustno1
+password: hunter2
 chpasswd: { expire: False }
 ssh_pwauth: True
 package_update: true

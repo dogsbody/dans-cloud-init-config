@@ -19,8 +19,5 @@ Just run `generate-userdata.sh` and answer the prompts
 
 
 ## ToDo
-* How do we know when the final reboot has happened?
-* Setup e-mail?
-* Turn off secure boot in Ubuntu?
-
+* How do we know when the final reboot has happened? We have the system rebooting after patching itself but no way to know if the system is up finally or not.
 
