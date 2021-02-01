@@ -9,6 +9,7 @@ My entirely personal cloud-init config generator for test, dev and play.
 or 
 
     git clone https://github.com/dogsbody/dans-cloud-init-config.git
+    cd dans-cloud-init-config
     git submodule init
     git submodule update
 
