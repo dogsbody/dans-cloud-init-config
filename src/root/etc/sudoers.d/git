@@ -1,0 +1,5 @@
+Defaults>root env_keep+=GIT_AUTHOR_NAME
+Defaults>root env_keep+=GIT_AUTHOR_EMAIL
+Defaults>root env_keep+=GIT_COMMITTER_NAME
+Defaults>root env_keep+=GIT_COMMITTER_EMAIL
+Defaults>root env_keep+=SSH_AUTH_SOCK

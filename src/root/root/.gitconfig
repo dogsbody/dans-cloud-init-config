@@ -1,0 +1,5 @@
+[user]
+        email = dan@dogsbody.org
+        name = Dan Benton
+[push]
+        default = simple
