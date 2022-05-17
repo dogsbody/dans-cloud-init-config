@@ -21,4 +21,4 @@ Just run `generate-userdata.sh` and answer the prompts
 
 ## ToDo
 * How do we know when the final reboot has happened? We have the system rebooting after patching itself but no way to know if the system is up finally or not.
-
+* Currently all files are created on the system as root with permissions 644 (this is wrong for /home/ubuntu/.gitconfig which should be created as ubuntu:ubuntu)
