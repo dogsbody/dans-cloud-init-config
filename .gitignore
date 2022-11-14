@@ -1,3 +1,5 @@
 /userdata-*.img
 /ubuntu-*.img
 /ubuntu-*.img.raw
+/debian-*.qcow2
+/debian-*.qcow2.raw

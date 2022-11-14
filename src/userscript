@@ -1,6 +1,7 @@
 #!/usr/bin/bash
-sed -i -r 's/^#?NTP=.*/NTP=0.uk.pool.ntp.org 1.uk.pool.ntp.org 2.uk.pool.ntp.org 3.uk.pool.ntp.org/' /etc/systemd/timesyncd.conf
-systemctl restart systemd-timesyncd
+# Remove secure boot as we are using bhyve and it speeds up boot
+apt -y purge shim shim-signed mokutil
+grub-install
 chmod -x /etc/update-motd.d/10-help-text
 sed -i -r 's/^#?ENABLED=.*/ENABLED=0/' /etc/default/motd-news
 sed -i -r 's/^#?X11Forwarding .*/X11Forwarding no/' /etc/ssh/sshd_config
