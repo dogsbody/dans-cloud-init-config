@@ -1,7 +1,4 @@
 #!/usr/bin/bash
-# Remove secure boot as we are using bhyve and it speeds up boot
-apt -y purge shim shim-signed mokutil
-grub-install
 chmod -x /etc/update-motd.d/10-help-text
 sed -i -r 's/^#?ENABLED=.*/ENABLED=0/' /etc/default/motd-news
 sed -i -r 's/^#?X11Forwarding .*/X11Forwarding no/' /etc/ssh/sshd_config
