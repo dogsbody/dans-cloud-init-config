@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-chmod -x /etc/update-motd.d/10-help-text
+chmod -x /etc/update-motd.d/10-help-text /etc/update-motd.d/91-release-upgrade
 sed -i -r 's/^#?ENABLED=.*/ENABLED=0/' /etc/default/motd-news
 sed -i -r 's/^#?X11Forwarding .*/X11Forwarding no/' /etc/ssh/sshd_config
 sed -i -r 's/^#?Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
