@@ -10,4 +10,12 @@ chmod 600 /swapfile
 mkswap /swapfile
 echo '/swapfile none swap sw 0 0' >> /etc/fstab
 if [ ! -f /home/ubuntu/.ssh/authorized_keys ]; then curl -sS https://github.com/dogsbody.keys -o /home/ubuntu/.ssh/authorized_keys; fi
-chown ubuntu:ubuntu -R /home/ubuntu
+chown ubuntu:ubuntu -R /home/ubuntu # lazy workaround as we are writing files as root into /home/ubuntu
+GIT_SSH_COMMAND="ssh -i /tmp/CloudInitDeployKey" git clone git@github.com:dogsbody/dan_tools.git /opt/dan_tools
+curl -sS https://repos.influxdata.com/influxdb.key | gpg --dearmor | tee /usr/share/keyrings/influxdb-keyring.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/influxdb-keyring.gpg] https://repos.influxdata.com/ubuntu stable main" | tee /etc/apt/sources.list.d/influxdb.list
+apt update
+apt install -y telegraf
+rm /etc/telegraf/telegraf.conf
+ln -s /opt/dan_tools/telegraf/telegraf.conf /etc/telegraf/telegraf.conf
+systemctl restart telegraf.service

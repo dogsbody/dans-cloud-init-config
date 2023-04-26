@@ -83,6 +83,14 @@ for FILE in $(find "$SCRIPTDIR/src/root" -type f -print); do
   echo "  append: false"      >> $OURCLOUDCONFIG
 done
 
+# Manually add our Deploy Key
+echo "- path: /tmp/CloudInitDeployKey"               >> $OURCLOUDCONFIG
+echo "  content: $(base64 --wrap=0 "${DEPLOYKEY}")"  >> $OURCLOUDCONFIG
+echo "  encoding: base64"   >> $OURCLOUDCONFIG
+echo "  owner: root:root"   >> $OURCLOUDCONFIG
+echo "  permissions: 0600"  >> $OURCLOUDCONFIG
+echo "  append: false"      >> $OURCLOUDCONFIG
+
 # Create our multipart file
 $WRITEMIME $SCRIPTDIR/src/userscript:text/x-shellscript $OURCLOUDCONFIG --output=$OURUSERDATARAW
 
