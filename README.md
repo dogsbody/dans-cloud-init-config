@@ -16,6 +16,8 @@ or
 
 ## Usage
 
+Add the Cloud Init Deploy Key to a file called `CloudInitDeployKey.pem` in the root of this repo
+
 Just run `generate-userdata.sh` and answer the prompts
 
 

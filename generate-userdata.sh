@@ -29,6 +29,7 @@ hash python3 # used by write-mime-multipart
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 WRITEMIME="$SCRIPTDIR/cloud-utils/bin/write-mime-multipart"
 CLDLOCALD="$SCRIPTDIR/cloud-utils/bin/cloud-localds"
+DEPLOYKEY="$SCRIPTDIR/CloudInitDeployKey.pem"
 OURCLOUDCONFIG=$(mktemp)
 OURUSERDATARAW=$(mktemp)
 OURUSERDATAIMG=""  # Set later in the script
@@ -39,6 +40,13 @@ if [[ ! -x ${WRITEMIME} || ! -x ${CLDLOCALD} ]];then
   echo "  You probably just need to initialise and update the submodule..."
   echo "    git submodule init -C ${SCRIPTDIR}"
   echo "    git submodule update -C ${SCRIPTDIR}"
+  exit
+fi
+
+# Check we have our Deploy Key
+if [[ ! -r ${DEPLOYKEY} ]];then
+  echo "Error: Can't find the Deploy Key we need..."
+  echo "  Ensure you have created ${DEPLOYKEY}"
   exit
 fi
 
