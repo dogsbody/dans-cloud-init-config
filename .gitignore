@@ -1,4 +1,5 @@
 /CloudInitDeployKey.pem
+/settings.local
 /userdata-*.img
 /ubuntu-*.img
 /ubuntu-*.img.raw

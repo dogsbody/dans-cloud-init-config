@@ -5,7 +5,6 @@ sed -i -r 's/^#?X11Forwarding .*/X11Forwarding no/' /etc/ssh/sshd_config
 sed -i -r 's/^#?Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
 sed -i -r 's/^#?RemoveIPC=.*/RemoveIPC=no/' /etc/systemd/logind.conf
 echo "set enable-bracketed-paste 0" >> /etc/inputrc
-systemctl mask esm-cache.service
 fallocate -l 512M /swapfile
 chmod 600 /swapfile
 mkswap /swapfile
