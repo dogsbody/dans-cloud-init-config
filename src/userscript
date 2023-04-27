@@ -5,11 +5,11 @@ sed -i -r 's/^#?X11Forwarding .*/X11Forwarding no/' /etc/ssh/sshd_config
 sed -i -r 's/^#?Prompt=.*/Prompt=never/' /etc/update-manager/release-upgrades
 sed -i -r 's/^#?RemoveIPC=.*/RemoveIPC=no/' /etc/systemd/logind.conf
 echo "set enable-bracketed-paste 0" >> /etc/inputrc
-#if [ ! -f /home/ubuntu/.ssh/authorized_keys ]; then curl -sS https://github.com/dogsbody.keys -o /home/ubuntu/.ssh/authorized_keys; fi
-curl -sS https://github.com/dogsbody.keys --output /home/ubuntu/.ssh/authorized_keys --trace /home/ubuntu/curllog.txt
+curl -sS https://github.com/dogsbody.keys --output /home/ubuntu/.ssh/authorized_keys
+ssh-keyscan -t rsa github.com | tee -a /root/.ssh/known_hosts
 GIT_SSH_COMMAND="ssh -i /run/CloudInitDeployKey" git clone git@github.com:dogsbody/dan_tools.git /opt/dan_tools
 curl -sS https://repos.influxdata.com/influxdata-archive_compat.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg > /dev/null
-echo 'deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main' | sudo tee /etc/apt/sources.list.d/influxdata.list
+echo 'deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main' | tee /etc/apt/sources.list.d/influxdata.list
 apt update
 apt install -y telegraf
 rm /etc/telegraf/telegraf.conf
