@@ -9,7 +9,7 @@
 #     src/userscript   A script to be run at the end of the first bootup 
 #     src/root/        Files that should be placed on the system in the appropriate directories
 #
-# Notes:  Currently all files are created on the system as root with permissions 644.
+# Notes:  See README.md
 #
 
 set -e
