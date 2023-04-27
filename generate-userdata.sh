@@ -89,7 +89,7 @@ find "$SOURCEDIR" -type f -print0 | while IFS= read -r -d '' FILE; do
       echo "  encoding: base64"
     fi
     echo "  owner: $FUSER:$FUSER"
-    echo "  permissions: 0644"
+    echo "  permissions: '0644'"
     echo "  append: false"
     if [[ "$FUSER" != "root" ]];then
       echo "  defer: true"
@@ -103,7 +103,7 @@ done
   echo "  content: $(base64 --wrap=0 "${DEPLOYKEY}")"
   echo "  encoding: base64"
   echo "  owner: root:root"
-  echo "  permissions: 0600"
+  echo "  permissions: '0600'"
   echo "  append: false"
 } >> "$OURCLOUDCONFIG"
 
