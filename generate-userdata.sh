@@ -63,45 +63,52 @@ fi
 # Get a password
 echo 
 echo "Let's get some information from you regarding your new system..."
-read -p 'Hostname: ' HOSTNAME
-read -sp 'Password: ' PASSWORD
+read -rp 'Hostname: ' HOSTNAME
+read -srp 'Password: ' PASSWORD
 echo -e "\n"
 OURUSERDATAIMG=$(mktemp -p "$SCRIPTDIR" "userdata-$HOSTNAME-XXXXX.img")
 
 # Create our cloudconfig from the template and set the password
-cp $SCRIPTDIR/src/cloudconfig $OURCLOUDCONFIG
-sed -i -r "s/^password: hunter2$/password: $PASSWORD/" $OURCLOUDCONFIG
+cp "$SCRIPTDIR/src/cloudconfig" "$OURCLOUDCONFIG"
+sed -i -r "s/^password: hunter2$/password: $PASSWORD/" "$OURCLOUDCONFIG"
 
 # Encode and add the files into the cloudconfig
-echo "write_files:" >> $OURCLOUDCONFIG
-for FILE in $(find "$SOURCEDIR" -type f -print); do
+echo "write_files:" >> "$OURCLOUDCONFIG"
+#for FILE in $(find "$SOURCEDIR" -type f -print); do
+find "$SOURCEDIR" -type f -print0 | while IFS= read -r -d '' FILE; do
   BASE64=$(base64 --wrap=0 "${FILE}")
   FUSER="root"
-  IFS='/' read -r -a SPLITFILE <<< "${FILE#$SOURCEDIR}"
-  if [[ ${SPLITFILE[1]} == "home" && ! -z ${SPLITFILE[2]} ]];then
+  IFS='/' read -r -a SPLITFILE <<< "${FILE#"$SOURCEDIR"}"
+  if [[ ${SPLITFILE[1]} == "home" && -n ${SPLITFILE[2]} ]];then
     FUSER="${SPLITFILE[2]}"
   fi
-  echo "- path: ${FILE#$SOURCEDIR}"                >> $OURCLOUDCONFIG
-  [[ -n "$BASE64" ]] && echo "  content: $BASE64"  >> $OURCLOUDCONFIG
-  echo "  encoding: base64"      >> $OURCLOUDCONFIG
-  echo "  owner: $FUSER:$FUSER"  >> $OURCLOUDCONFIG
-  echo "  permissions: 0644"     >> $OURCLOUDCONFIG
-  echo "  append: false"         >> $OURCLOUDCONFIG
+  {
+    echo "- path: ${FILE#"$SOURCEDIR"}"
+    if [[ -n "$BASE64" ]];then
+      echo "  content: $BASE64"
+      echo "  encoding: base64"
+    fi
+    echo "  owner: $FUSER:$FUSER"
+    echo "  permissions: 0644"
+    echo "  append: false"
+  } >> "$OURCLOUDCONFIG"
 done
 
 # Manually add our Deploy Key
-echo "- path: /run/CloudInitDeployKey"               >> $OURCLOUDCONFIG
-echo "  content: $(base64 --wrap=0 "${DEPLOYKEY}")"  >> $OURCLOUDCONFIG
-echo "  encoding: base64"   >> $OURCLOUDCONFIG
-echo "  owner: root:root"   >> $OURCLOUDCONFIG
-echo "  permissions: 0600"  >> $OURCLOUDCONFIG
-echo "  append: false"      >> $OURCLOUDCONFIG
+{
+  echo "- path: /run/CloudInitDeployKey"
+  echo "  content: $(base64 --wrap=0 "${DEPLOYKEY}")"
+  echo "  encoding: base64"
+  echo "  owner: root:root"
+  echo "  permissions: 0600"
+  echo "  append: false"
+} >> "$OURCLOUDCONFIG"
 
 # Create our multipart file
-$WRITEMIME $SCRIPTDIR/src/userscript:text/x-shellscript $OURCLOUDCONFIG --output=$OURUSERDATARAW
+$WRITEMIME "$SCRIPTDIR/src/userscript:text/x-shellscript" "$OURCLOUDCONFIG" --output="$OURUSERDATARAW"
 
 # Create our userdata volume
-$CLDLOCALD --hostname $HOSTNAME $OURUSERDATAIMG $OURUSERDATARAW
+$CLDLOCALD --hostname "$HOSTNAME" "$OURUSERDATAIMG" "$OURUSERDATARAW"
 echo "Disk Image: $OURUSERDATAIMG"
 
 rm "$OURCLOUDCONFIG" "$OURUSERDATARAW"
