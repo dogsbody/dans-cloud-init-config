@@ -41,8 +41,8 @@ if [ -f "$SCRIPTDIR/settings.local" ]; then source "$SCRIPTDIR/settings.local"; 
 if [[ ! -x ${WRITEMIME} || ! -x ${CLDLOCALD} ]];then
   echo "Error: Can't find the scripts we need in the cloud-utils sub-repo"
   echo "  You probably just need to initialise and update the submodule..."
-  echo "    git submodule init -C ${SCRIPTDIR}"
-  echo "    git submodule update -C ${SCRIPTDIR}"
+  echo "    git -C ${SCRIPTDIR}" submodule init
+  echo "    git -C ${SCRIPTDIR}" submodule init
   exit
 fi
 
