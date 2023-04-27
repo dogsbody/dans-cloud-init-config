@@ -12,3 +12,7 @@ power_state:
   mode: reboot
   message: Final Reboot
   timeout: 300
+swap:
+  filename: /swapfile
+  size: 512M
+  maxsize: 512M
