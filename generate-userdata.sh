@@ -91,6 +91,9 @@ find "$SOURCEDIR" -type f -print0 | while IFS= read -r -d '' FILE; do
     echo "  owner: $FUSER:$FUSER"
     echo "  permissions: 0644"
     echo "  append: false"
+    if [[ "$FUSER" != "root" ]];then
+      echo "  defer: true"
+    fi
   } >> "$OURCLOUDCONFIG"
 done
 
