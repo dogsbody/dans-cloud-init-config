@@ -30,6 +30,7 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 WRITEMIME="$SCRIPTDIR/cloud-utils/bin/write-mime-multipart"
 CLDLOCALD="$SCRIPTDIR/cloud-utils/bin/cloud-localds"
 DEPLOYKEY="$SCRIPTDIR/CloudInitDeployKey.pem"
+SOURCEDIR="$SCRIPTDIR/src/root"
 OURCLOUDCONFIG=$(mktemp)
 OURUSERDATARAW=$(mktemp)
 OURUSERDATAIMG=""  # Set later in the script
@@ -73,14 +74,19 @@ sed -i -r "s/^password: hunter2$/password: $PASSWORD/" $OURCLOUDCONFIG
 
 # Encode and add the files into the cloudconfig
 echo "write_files:" >> $OURCLOUDCONFIG
-for FILE in $(find "$SCRIPTDIR/src/root" -type f -print); do
-  echo "- path: ${FILE#$SCRIPTDIR/src/root}"      >> $OURCLOUDCONFIG
-  echo "  content: $(base64 --wrap=0 "${FILE}")"  >> $OURCLOUDCONFIG
-  echo "  encoding: base64"                       >> $OURCLOUDCONFIG
-  # Leaving these options here not 'cos they are needed but as prompts for improvement in the future 
-  echo "  owner: root:root"   >> $OURCLOUDCONFIG
-  echo "  permissions: 0644"  >> $OURCLOUDCONFIG
-  echo "  append: false"      >> $OURCLOUDCONFIG
+for FILE in $(find "$SOURCEDIR" -type f -print); do
+  BASE64=$(base64 --wrap=0 "${FILE}")
+  FUSER="root"
+  IFS='/' read -r -a SPLITFILE <<< "${FILE#$SOURCEDIR}"
+  if [[ ${SPLITFILE[1]} == "home" && ! -z ${SPLITFILE[2]} ]];then
+    FUSER="${SPLITFILE[2]}"
+  fi
+  echo "- path: ${FILE#$SOURCEDIR}"                >> $OURCLOUDCONFIG
+  [[ -n "$BASE64" ]] && echo "  content: $BASE64"  >> $OURCLOUDCONFIG
+  echo "  encoding: base64"      >> $OURCLOUDCONFIG
+  echo "  owner: $FUSER:$FUSER"  >> $OURCLOUDCONFIG
+  echo "  permissions: 0644"     >> $OURCLOUDCONFIG
+  echo "  append: false"         >> $OURCLOUDCONFIG
 done
 
 # Manually add our Deploy Key
