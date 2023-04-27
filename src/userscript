@@ -14,4 +14,4 @@ apt update
 apt install -y telegraf
 rm /etc/telegraf/telegraf.conf
 ln -s /opt/dan_tools/telegraf/telegraf.conf /etc/telegraf/telegraf.conf
-systemctl restart telegraf.service
+# We don't bother restarting telegraf after this config change as we know the server will be rebooted next
