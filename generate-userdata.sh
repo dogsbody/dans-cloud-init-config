@@ -90,7 +90,7 @@ for FILE in $(find "$SOURCEDIR" -type f -print); do
 done
 
 # Manually add our Deploy Key
-echo "- path: /tmp/CloudInitDeployKey"               >> $OURCLOUDCONFIG
+echo "- path: /run/CloudInitDeployKey"               >> $OURCLOUDCONFIG
 echo "  content: $(base64 --wrap=0 "${DEPLOYKEY}")"  >> $OURCLOUDCONFIG
 echo "  encoding: base64"   >> $OURCLOUDCONFIG
 echo "  owner: root:root"   >> $OURCLOUDCONFIG
