@@ -1,5 +1,6 @@
 #cloud-config
 # vim: syntax=yaml
+# The order that things will be run.. https://stackoverflow.com/a/37190866
 password: hunter2
 chpasswd: { expire: False }
 ssh_pwauth: True
@@ -8,6 +9,7 @@ package_upgrade: true
 packages:
  - git
  - chrony
+ - telegraf
 power_state:
   mode: reboot
   message: Final Reboot
