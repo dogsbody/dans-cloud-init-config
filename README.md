@@ -29,9 +29,6 @@ One of the best ways to see if there were any errors when deployed is to gret th
 
 
 ## ToDo
-* How do we know when the final reboot has happened? We have the system rebooting after patching itself but no way to know if the system is up finally or not.
 * Currently all files are created on the system with the same permissions of 644
 * Check that hostname is a full fqdn
-* add checkrepo script to `/opt/dan_tools` and check `/opt/dan_tools` up to not hanging
-* Add an e-mail on boot script to `/opt/dan_tools` and e-mail on reboots which also fixes the "How do we know when the final reboot has happened?"
 
