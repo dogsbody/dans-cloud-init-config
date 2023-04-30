@@ -36,7 +36,7 @@ OURCLOUDCONFIG=$(mktemp)
 OURUSERDATARAW=$(mktemp)
 OURUSERDATAIMG=""  # Set later in the script
 
-if [ -f "$SCRIPTDIR/settings.local" ]; then source "$SCRIPTDIR/settings.local"; fi
+#if [ -f "$SCRIPTDIR/settings.local" ]; then source "$SCRIPTDIR/settings.local"; fi
 
 # Check we have our submodule installed
 if [[ ! -x ${WRITEMIME} || ! -x ${CLDLOCALD} ]];then
