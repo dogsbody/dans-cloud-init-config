@@ -1,0 +1,1 @@
+@reboot root echo "Just to let you know that the $(hostname -f) has been rebooted" | mail -s "Server $(hostname) has been rebooted" root
