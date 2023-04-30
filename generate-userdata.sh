@@ -29,7 +29,8 @@ hash python3 # used by write-mime-multipart
 SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 WRITEMIME="$SCRIPTDIR/cloud-utils/bin/write-mime-multipart"
 CLDLOCALD="$SCRIPTDIR/cloud-utils/bin/cloud-localds"
-DEPLOYKEY="$SCRIPTDIR/CloudInitDeployKey.pem"
+DEPLOYKEY="$SCRIPTDIR/src/CloudInitDeployKey.pem"
+MAILAUTH="$SCRIPTDIR/src/sasl_passwd"
 SOURCEDIR="$SCRIPTDIR/src/root"
 OURCLOUDCONFIG=$(mktemp)
 OURUSERDATARAW=$(mktemp)
@@ -53,6 +54,13 @@ if [[ ! -r ${DEPLOYKEY} ]];then
   exit
 fi
 
+# Check we have our Mail server creds
+if [[ ! -r ${MAILAUTH} ]];then
+  echo "Error: Can't find the Mail server credentials we need..."
+  echo "  Ensure you have created ${MAILAUTH}"
+  exit
+fi
+
 if ! command -v "genisoimage" >/dev/null ;then
   echo "Error: Can't find 'genisoimage' on the sytem"
   echo "  This can be installed (on Ubuntu 20.04) with..."
@@ -63,7 +71,7 @@ fi
 # Get a password
 echo 
 echo "Let's get some information from you regarding your new system..."
-read -rp 'Hostname: ' HOSTNAME
+read -rp 'Hostname (FQDN): ' HOSTNAME
 read -srp 'Password: ' PASSWORD
 echo -e "\n"
 OURUSERDATAIMG=$(mktemp -p "$SCRIPTDIR" "userdata-$HOSTNAME-XXXXX.img")
@@ -71,6 +79,7 @@ OURUSERDATAIMG=$(mktemp -p "$SCRIPTDIR" "userdata-$HOSTNAME-XXXXX.img")
 # Create our cloudconfig from the template and set the password
 cp "$SCRIPTDIR/src/cloudconfig" "$OURCLOUDCONFIG"
 sed -i -r "s/^password: hunter2$/password: $PASSWORD/" "$OURCLOUDCONFIG"
+sed -i -r "s/^fqdn: fqdn.example.com$/fqdn: $HOSTNAME/" "$OURCLOUDCONFIG"
 
 # Encode and add the files into the cloudconfig
 echo "write_files:" >> "$OURCLOUDCONFIG"
@@ -101,6 +110,16 @@ done
 {
   echo "- path: /run/CloudInitDeployKey"
   echo "  content: $(base64 --wrap=0 "${DEPLOYKEY}")"
+  echo "  encoding: base64"
+  echo "  owner: root:root"
+  echo "  permissions: '0600'"
+  echo "  append: false"
+} >> "$OURCLOUDCONFIG"
+
+# Manually add our Mail server credentials
+{
+  echo "- path: /etc/postfix/sasl_passwd"
+  echo "  content: $(base64 --wrap=0 "${MAILAUTH}")"
   echo "  encoding: base64"
   echo "  owner: root:root"
   echo "  permissions: '0600'"

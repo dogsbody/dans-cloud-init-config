@@ -1,5 +1,6 @@
-/CloudInitDeployKey.pem
 /settings.local
+/src/CloudInitDeployKey.pem
+/src/sasl_passwd
 /userdata-*.img
 /ubuntu-*.img
 /ubuntu-*.img.raw

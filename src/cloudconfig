@@ -2,6 +2,8 @@
 # vim: syntax=yaml
 # The order that things will be run.. https://stackoverflow.com/a/37190866
 password: hunter2
+fqdn: fqdn.example.com
+manage_etc_hosts: localhost
 chpasswd: { expire: False }
 ssh_pwauth: True
 package_update: true
@@ -10,6 +12,8 @@ packages:
  - git
  - chrony
  - telegraf
+ - mailutils
+ - postfix
 power_state:
   mode: reboot
   message: Final Reboot
