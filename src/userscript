@@ -10,6 +10,7 @@ curl -sS https://github.com/dogsbody.keys --output /home/ubuntu/.ssh/authorized_
 # Pre-allow github hash and pull down git repo
 ssh-keyscan -t rsa github.com | tee -a /root/.ssh/known_hosts
 GIT_SSH_COMMAND="ssh -i /run/CloudInitDeployKey" git clone git@github.com:dogsbody/dan_tools.git /opt/dan_tools
+echo "04 07 * * * root bash /opt/dan_tools/bin/check-repo.sh /opt/dan_tools/ local" | tee /etc/cron.d/check_tools_repo
 # Configure telegraf
 rm /etc/telegraf/telegraf.conf
 ln -s /opt/dan_tools/telegraf/telegraf.conf /etc/telegraf/telegraf.conf
