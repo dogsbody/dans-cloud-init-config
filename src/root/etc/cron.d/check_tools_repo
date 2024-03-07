@@ -1,0 +1,2 @@
+04 07 * * * root bash /opt/dan_tools/bin/check-repo.sh /opt/dan_tools/ local
+
