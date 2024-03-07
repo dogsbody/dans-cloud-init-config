@@ -30,5 +30,6 @@ One of the best ways to see if there were any errors when deployed is to gret th
 
 ## ToDo
 * Currently all files are created on the system with the same permissions of 644
-* Check that hostname is a full fqdn
-
+* Check that hostname is a full fqdn 
+* Install Netdata
+* Remove Telegraf
