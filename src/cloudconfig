@@ -13,6 +13,7 @@ packages:
  - chrony
  - mailutils
  - postfix
+ - apt-transport-https
 power_state:
   mode: reboot
   message: Final Reboot
