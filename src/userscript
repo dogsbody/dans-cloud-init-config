@@ -7,6 +7,7 @@ sed -i -r 's/^#?RemoveIPC=.*/RemoveIPC=no/' /etc/systemd/logind.conf
 sed -i s/ARCH/$(dpkg --print-architecture)/g etc/apt/sources.list.d/*.list
 sed -i s/CODENAME/$(lsb_release -cs)/g etc/apt/sources.list.d/*.list
 echo "set enable-bracketed-paste 0" >> /etc/inputrc
+update-alternatives --set editor /usr/bin/vim.basic
 # Add Dan's keys to the ubuntu user
 curl -sS https://github.com/dogsbody.keys --output /home/ubuntu/.ssh/authorized_keys
 # Pre-allow github hash and pull down git repo
