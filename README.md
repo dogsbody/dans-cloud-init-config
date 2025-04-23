@@ -30,6 +30,6 @@ One of the best ways to see if there were any errors when deployed is to gret th
 
 ## ToDo
 * Currently all files are created on the system with the same permissions of 644
-* Check that hostname is a full fqdn 
-* Install Netdata
-* Remove Telegraf
+* Check that hostname is a full fqdn
+* Find a way to automatically add a line to /etc/hosts for the public IP address and fqdn
+*   e.g. 192.168.32.118  nzb01.dogsbody.org      nzb01
