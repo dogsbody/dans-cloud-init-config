@@ -28,7 +28,7 @@ postconf -e "smtp_tls_wrappermode = yes"
 postconf -e "inet_protocols = ipv4"
 # Install Netdata
 wget -O /tmp/netdata-kickstart.sh https://my-netdata.io/kickstart.sh && sh /tmp/netdata-kickstart.sh --stable-channel --disable-telemetry --native-only --no-updates --non-interactive
-rm /opt/netdata/etc/netdata/netdata.conf
-ln -s /opt/dan_tools/netdata/netdata-child.conf /opt/netdata/etc/netdata/netdata.conf
-ln -s /opt/dan_tools/netdata/netdata-child-stream.conf /opt/netdata/etc/netdata/stream.conf
+rm /etc/netdata/netdata.conf
+ln -s /opt/dan_tools/netdata/netdata-child.conf /etc/netdata/netdata.conf
+ln -s /opt/dan_tools/netdata/netdata-child-stream.conf /etc/netdata/stream.conf
 # We don't bother restarting services after configuring them as we know the server will be rebooted next
